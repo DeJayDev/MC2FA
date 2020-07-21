@@ -1,14 +1,14 @@
 package com.connorlinfoot.mc2fa.bukkit.storage;
 
 import com.connorlinfoot.mc2fa.shared.storage.StorageHandler;
-import org.bukkit.configuration.file.YamlConfiguration;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 public class FlatStorage extends StorageHandler {
-    private File file;
+
+    private final File file;
     private YamlConfiguration configuration;
 
     public FlatStorage(File file) {

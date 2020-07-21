@@ -11,7 +11,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class CommandHandler implements CommandExecutor {
-    private MC2FA mc2FA;
+
+    private final MC2FA mc2FA;
 
     public CommandHandler(MC2FA mc2FA) {
         this.mc2FA = mc2FA;
@@ -59,8 +60,9 @@ public class CommandHandler implements CommandExecutor {
                 if (approved) {
                     messageHandler.sendMessage(player, "&aYou have successfully setup two-factor authentication");
                     player.getInventory().forEach(itemStack -> {
-                        if (mc2FA.getAuthHandler().isQRCodeItem(itemStack))
+                        if (mc2FA.getAuthHandler().isQRCodeItem(itemStack)) {
                             player.getInventory().remove(itemStack);
+                        }
                     });
                 } else {
                     messageHandler.sendMessage(player, "&cThe key you entered was not valid, please try again");
@@ -132,10 +134,10 @@ public class CommandHandler implements CommandExecutor {
                                 case "auth":
                                 case "authstate":
                                 case "state":
-                                    sender.sendMessage("AuthState: " + String.valueOf(mc2FA.getAuthHandler().getState(target.getUniqueId())));
+                                    sender.sendMessage("AuthState: " + mc2FA.getAuthHandler().getState(target.getUniqueId()));
                                     break;
                                 case "key":
-                                    sender.sendMessage("Key: " + String.valueOf(mc2FA.getAuthHandler().getStorageHandler().getKey(target.getUniqueId())));
+                                    sender.sendMessage("Key: " + mc2FA.getAuthHandler().getStorageHandler().getKey(target.getUniqueId()));
                                     break;
                                 case "totp":
                                     sender.sendMessage("Key: " + new GoogleAuthenticator().getTotpPassword(mc2FA.getAuthHandler().getStorageHandler().getKey(target.getUniqueId())));

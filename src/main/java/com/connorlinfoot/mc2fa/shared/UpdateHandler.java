@@ -1,20 +1,20 @@
 package com.connorlinfoot.mc2fa.shared;
 
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 public class UpdateHandler {
+
     private final String update_url = "http://api.connorlinfoot.com/v1/resource/release/mc2fa/";
     private boolean enabled = true;
     private UpdateResult updateResult = UpdateResult.CHECKING;
-    private String currentVersion;
+    private final String currentVersion;
     private String newestVersion;
     private String message = null;
 
@@ -29,8 +29,7 @@ public class UpdateHandler {
     public UpdateHandler(boolean enabled, String currentVersion) {
         this.enabled = enabled;
         this.currentVersion = currentVersion;
-        if (!enabled)
-            this.updateResult = UpdateResult.DISABLED;
+        if (!enabled) { this.updateResult = UpdateResult.DISABLED; }
     }
 
     public UpdateResult getUpdateResult() {

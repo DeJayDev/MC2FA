@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class MC2FA extends JavaPlugin {
+
     private boolean updateAvailable = false;
     private String updateMessage = "";
     private String pluginMessage = null;
@@ -32,8 +33,9 @@ public class MC2FA extends JavaPlugin {
             for (Player player : Bukkit.getOnlinePlayers()) {
                 getAuthHandler().playerJoin(player.getUniqueId());
                 player.getInventory().forEach(itemStack -> {
-                    if (getAuthHandler().isQRCodeItem(itemStack))
+                    if (getAuthHandler().isQRCodeItem(itemStack)) {
                         player.getInventory().remove(itemStack);
+                    }
                 });
             }
         }

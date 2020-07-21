@@ -3,22 +3,21 @@ package com.connorlinfoot.mc2fa.shared;
 import com.connorlinfoot.mc2fa.shared.storage.StorageHandler;
 import com.warrenstrange.googleauth.GoogleAuthenticator;
 import com.warrenstrange.googleauth.GoogleAuthenticatorKey;
-
 import java.util.HashMap;
 import java.util.UUID;
 
 public abstract class AuthHandler {
+
     protected StorageHandler storageHandler;
     protected HashMap<UUID, AuthState> authStates = new HashMap<>();
-    private HashMap<UUID, String> pendingKeys = new HashMap<>();
+    private final HashMap<UUID, String> pendingKeys = new HashMap<>();
 
     public enum AuthState {
         LOADING, DISABLED, PENDING_SETUP, PENDING_LOGIN, AUTHENTICATED
     }
 
     public AuthState getState(UUID uuid) {
-        if (authStates.containsKey(uuid))
-            return authStates.get(uuid);
+        if (authStates.containsKey(uuid)) { return authStates.get(uuid); }
         return null;
     }
 
@@ -62,21 +61,18 @@ public abstract class AuthHandler {
     }
 
     private String getKey(UUID uuid) {
-        if (!isEnabled(uuid))
-            return null;
+        if (!isEnabled(uuid)) { return null; }
         return getStorageHandler().getKey(uuid);
     }
 
     private String getPendingKey(UUID uuid) {
-        if (!isPendingSetup(uuid))
-            return null;
+        if (!isPendingSetup(uuid)) { return null; }
         return pendingKeys.get(uuid);
     }
 
     public String getQRCodeURL(String urlTemplate, UUID uuid) {
         String key = getPendingKey(uuid);
-        if (key == null)
-            return null;
+        if (key == null) { return null; }
         return urlTemplate.replaceAll("%%key%%", key);
     }
 
@@ -95,10 +91,8 @@ public abstract class AuthHandler {
     }
 
     public void playerQuit(UUID uuid) {
-        if (pendingKeys.containsKey(uuid))
-            pendingKeys.remove(uuid);
-        if (authStates.containsKey(uuid))
-            authStates.remove(uuid);
+        pendingKeys.remove(uuid);
+        authStates.remove(uuid);
     }
 
     public StorageHandler getStorageHandler() {

@@ -4,6 +4,11 @@ import com.connorlinfoot.mc2fa.bukkit.MC2FA;
 import com.connorlinfoot.mc2fa.bukkit.events.PlayerStateChangeEvent;
 import com.connorlinfoot.mc2fa.bukkit.storage.FlatStorage;
 import com.connorlinfoot.mc2fa.bukkit.utils.ImageRenderer;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
@@ -16,16 +21,11 @@ import org.bukkit.map.MapView;
 import org.bukkit.material.Dye;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.UUID;
-
 public class AuthHandler extends com.connorlinfoot.mc2fa.shared.AuthHandler {
-    private MC2FA mc2FA;
-    private ArrayList<UUID> openGUIs = new ArrayList<>();
-    private HashMap<UUID, String> currentGUIKeys = new HashMap<>();
+
+    private final MC2FA mc2FA;
+    private final ArrayList<UUID> openGUIs = new ArrayList<>();
+    private final HashMap<UUID, String> currentGUIKeys = new HashMap<>();
 
     public AuthHandler(MC2FA mc2FA) {
         this.mc2FA = mc2FA;
@@ -166,8 +166,9 @@ public class AuthHandler extends com.connorlinfoot.mc2fa.shared.AuthHandler {
                 // Require key from 2FA
                 mc2FA.getMessageHandler().sendMessage(player, "&cTwo-factor authentication is enabled on this account");
                 mc2FA.getMessageHandler().sendMessage(player, "&cPlease authenticate using /2fa <key>");
-                if (mc2FA.getConfigHandler().isGuiKeypad())
+                if (mc2FA.getConfigHandler().isGuiKeypad()) {
                     Bukkit.getScheduler().runTaskLater(mc2FA, () -> open2FAGUI(player), 5L);
+                }
             }
         } else {
             if (mc2FA.getConfigHandler().getForced() == ConfigHandler.Forced.TRUE || (player.isOp() && mc2FA.getConfigHandler().getForced() == ConfigHandler.Forced.OP)) {
@@ -184,22 +185,18 @@ public class AuthHandler extends com.connorlinfoot.mc2fa.shared.AuthHandler {
 
     public void playerQuit(UUID uuid) {
         super.playerQuit(uuid);
-        if (openGUIs.contains(uuid))
-            openGUIs.remove(uuid);
-        if (currentGUIKeys.containsKey(uuid))
-            currentGUIKeys.remove(uuid);
+        openGUIs.remove(uuid);
+        currentGUIKeys.remove(uuid);
     }
 
     public void changeState(UUID uuid, AuthState authState) {
-        if (authState == getState(uuid))
-            return;
+        if (authState == getState(uuid)) { return; }
 
         Player player = Bukkit.getPlayer(uuid);
         if (player != null) {
             PlayerStateChangeEvent event = new PlayerStateChangeEvent(player, authState);
             mc2FA.getServer().getPluginManager().callEvent(event);
-            if (event.isCancelled())
-                return;
+            if (event.isCancelled()) { return; }
             authState = event.getAuthState();
         }
 

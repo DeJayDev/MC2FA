@@ -1,13 +1,13 @@
 package com.connorlinfoot.mc2fa.bukkit.handlers;
 
 import com.connorlinfoot.mc2fa.bukkit.MC2FA;
+import java.util.ArrayList;
+import java.util.List;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class ConfigHandler {
+
     private String qrCodeURL = "https://www.google.com/chart?chs=128x128&cht=qr&chl=otpauth://totp/%%label%%?secret=%%key%%";
     private String label = "%%name%%:MC2FA";
     private boolean debug = false;
@@ -29,17 +29,17 @@ public class ConfigHandler {
     public ConfigHandler(MC2FA mc2FA) {
         FileConfiguration config = mc2FA.getConfig();
 
-        if (config.isSet("Debug"))
-            debug = config.getBoolean("Debug");
+        if (config.isSet("Debug")) { debug = config.getBoolean("Debug"); }
 
-        if (config.isSet("Disable Commands"))
+        if (config.isSet("Disable Commands")) {
             commandsDisabled = config.getBoolean("Disable Commands");
+        }
 
-        if (config.isSet("GUI Keypad"))
-            guiKeypad = config.getBoolean("GUI Keypad");
+        if (config.isSet("GUI Keypad")) { guiKeypad = config.getBoolean("GUI Keypad"); }
 
-        if (config.isSet("Whitelisted Commands"))
+        if (config.isSet("Whitelisted Commands")) {
             whitelistedCommands = config.getStringList("Whitelisted Commands");
+        }
 
         whitelistedCommands.add("2fa");
         whitelistedCommands.add("twofactorauth");
@@ -47,8 +47,9 @@ public class ConfigHandler {
         whitelistedCommands.add("twofa");
         whitelistedCommands.add("tfa");
 
-        if (config.isSet("Blacklisted Commands"))
+        if (config.isSet("Blacklisted Commands")) {
             blacklistedCommands = config.getStringList("Blacklisted Commands");
+        }
 
         if (config.isSet("Key Storage")) {
             try {

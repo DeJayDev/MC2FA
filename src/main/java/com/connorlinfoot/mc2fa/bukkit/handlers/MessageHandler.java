@@ -1,15 +1,15 @@
 package com.connorlinfoot.mc2fa.bukkit.handlers;
 
 import com.connorlinfoot.mc2fa.bukkit.MC2FA;
+import java.io.File;
+import java.io.IOException;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
-import java.io.File;
-import java.io.IOException;
-
 public class MessageHandler extends com.connorlinfoot.mc2fa.shared.MessageHandler {
-    private MC2FA mc2FA;
+
+    private final MC2FA mc2FA;
     private YamlConfiguration messagesConfig;
 
     public MessageHandler(MC2FA mc2FA) {

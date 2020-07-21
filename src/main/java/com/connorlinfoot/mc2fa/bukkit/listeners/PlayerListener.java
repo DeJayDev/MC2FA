@@ -2,7 +2,6 @@ package com.connorlinfoot.mc2fa.bukkit.listeners;
 
 import com.connorlinfoot.mc2fa.bukkit.MC2FA;
 import com.connorlinfoot.mc2fa.bukkit.events.PlayerStateChangeEvent;
-import com.connorlinfoot.mc2fa.shared.AuthHandler;
 import com.connorlinfoot.mc2fa.shared.AuthHandler.AuthState;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -19,10 +18,18 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.event.player.*;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerPickupItemEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 public class PlayerListener implements Listener {
-    private MC2FA mc2FA;
+
+    private final MC2FA mc2FA;
 
     public PlayerListener(MC2FA mc2FA) {
         this.mc2FA = mc2FA;
@@ -39,8 +46,9 @@ public class PlayerListener implements Listener {
 
         mc2FA.getAuthHandler().playerJoin(event.getPlayer().getUniqueId());
         event.getPlayer().getInventory().forEach(itemStack -> {
-            if (mc2FA.getAuthHandler().isQRCodeItem(itemStack))
+            if (mc2FA.getAuthHandler().isQRCodeItem(itemStack)) {
                 event.getPlayer().getInventory().remove(itemStack);
+            }
         });
         if (mc2FA.getAuthHandler().needsToAuthenticate(event.getPlayer().getUniqueId())) {
             event.getPlayer().setWalkSpeed(0);

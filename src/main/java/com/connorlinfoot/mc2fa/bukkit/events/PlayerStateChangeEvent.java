@@ -1,15 +1,17 @@
 package com.connorlinfoot.mc2fa.bukkit.events;
 
 import com.connorlinfoot.mc2fa.shared.AuthHandler;
+import com.connorlinfoot.mc2fa.shared.AuthHandler.AuthState;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 public class PlayerStateChangeEvent extends Event implements Cancellable {
+
     private static final HandlerList handlers = new HandlerList();
-    private Player player;
-    private AuthHandler.AuthState authState;
+    private final Player player;
+    private AuthState authState;
     private boolean cancelled = false;
 
     public PlayerStateChangeEvent(Player player, AuthHandler.AuthState authState) {

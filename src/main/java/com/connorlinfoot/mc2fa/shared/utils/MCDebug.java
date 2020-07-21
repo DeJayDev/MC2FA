@@ -3,7 +3,6 @@ package com.connorlinfoot.mc2fa.shared.utils;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonWriter;
-
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.StringWriter;
@@ -25,14 +24,14 @@ public class MCDebug {
             try (OutputStream os = connection.getOutputStream()) {
                 StringWriter sw = new StringWriter();
                 new JsonWriter(sw).beginObject()
-                        .name("description").value(desc)
-                        .name("public").value(false)
-                        .name("files")
-                        .beginObject().name(name)
-                        .beginObject().name("content").value(contents)
-                        .endObject()
-                        .endObject()
-                        .endObject();
+                    .name("description").value(desc)
+                    .name("public").value(false)
+                    .name("files")
+                    .beginObject().name(name)
+                    .beginObject().name("content").value(contents)
+                    .endObject()
+                    .endObject()
+                    .endObject();
 
                 os.write(sw.toString().getBytes(StandardCharsets.UTF_8));
             }
