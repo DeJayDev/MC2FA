@@ -6,12 +6,14 @@ import com.connorlinfoot.mc2fa.bukkit.storage.FlatStorage;
 import com.connorlinfoot.mc2fa.bukkit.utils.ImageRenderer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.map.MapView;
+import org.bukkit.material.Dye;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
@@ -126,10 +128,11 @@ public class AuthHandler extends com.connorlinfoot.mc2fa.shared.AuthHandler {
             if (no == 10) {
                 no = 0;
             }
-            ItemStack itemStack = new ItemStack(Material.STAINED_GLASS_PANE, no, (short) 13);
+            ItemStack itemStack = new ItemStack(Material.STAINED_GLASS_PANE, no);
             ItemMeta itemMeta = itemStack.getItemMeta();
             itemMeta.setDisplayName(ChatColor.WHITE + "" + no);
             itemStack.setItemMeta(itemMeta);
+            itemStack.setData(new Dye(DyeColor.GREEN));
             gui.setItem(slot, itemStack);
             slot++;
         }
@@ -142,7 +145,7 @@ public class AuthHandler extends com.connorlinfoot.mc2fa.shared.AuthHandler {
         if (currentGUIKeys.containsKey(player.getUniqueId())) {
             current = currentGUIKeys.get(player.getUniqueId());
         }
-        currentGUIKeys.put(player.getUniqueId(), current + String.valueOf(num));
+        currentGUIKeys.put(player.getUniqueId(), current +  num);
     }
 
     public void playerJoin(UUID uuid) {

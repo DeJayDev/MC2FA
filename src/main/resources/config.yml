@@ -1,8 +1,5 @@
 # MC2FA v${project.version} Configuration
 
-# Whether or not MC2FA should report back stats to MCStats.xyz
-MCStats: true
-
 # Whether 2FA should be forced, supports true, false or OP
 Forced: false
 

@@ -5,14 +5,11 @@ import com.connorlinfoot.mc2fa.bukkit.handlers.CommandHandler;
 import com.connorlinfoot.mc2fa.bukkit.handlers.ConfigHandler;
 import com.connorlinfoot.mc2fa.bukkit.handlers.MessageHandler;
 import com.connorlinfoot.mc2fa.bukkit.listeners.PlayerListener;
-import com.connorlinfoot.mc2fa.bukkit.utils.MCStats;
 import com.connorlinfoot.mc2fa.shared.UpdateHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import java.io.IOException;
 
 public class MC2FA extends JavaPlugin {
     private boolean updateAvailable = false;
@@ -31,15 +28,6 @@ public class MC2FA extends JavaPlugin {
         authHandler = new AuthHandler(this);
         messageHandler = new MessageHandler(this);
 
-        if (getConfig().getBoolean("MCStats", true)) {
-            try {
-                MCStats mcstats = new MCStats(this);
-                mcstats.start();
-            } catch (IOException e) {
-                // Failed to submit the stats :-(
-            }
-        }
-
         if (!Bukkit.getOnlinePlayers().isEmpty()) {
             for (Player player : Bukkit.getOnlinePlayers()) {
                 getAuthHandler().playerJoin(player.getUniqueId());
@@ -53,7 +41,7 @@ public class MC2FA extends JavaPlugin {
         getServer().getPluginCommand("2fa").setExecutor(new CommandHandler(this));
         getServer().getPluginManager().registerEvents(new PlayerListener(this), this);
         Bukkit.getConsoleSender().sendMessage(ChatColor.AQUA + "MC2FA v" + getDescription().getVersion() + " has been enabled");
-        checkUpdates();
+        //checkUpdates();
     }
 
     private void checkUpdates() {
