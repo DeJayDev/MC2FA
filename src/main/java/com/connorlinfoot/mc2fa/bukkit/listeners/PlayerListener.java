@@ -3,7 +3,9 @@ package com.connorlinfoot.mc2fa.bukkit.listeners;
 import com.connorlinfoot.mc2fa.bukkit.MC2FA;
 import com.connorlinfoot.mc2fa.bukkit.events.PlayerStateChangeEvent;
 import com.connorlinfoot.mc2fa.shared.AuthHandler;
+import com.connorlinfoot.mc2fa.shared.AuthHandler.AuthState;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
@@ -54,10 +56,11 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerMove(PlayerMoveEvent event) {
         if (mc2FA.getAuthHandler().needsToAuthenticate(event.getPlayer().getUniqueId())) {
-            if (event.getTo().getBlockZ() != event.getFrom().getBlockZ() || event.getTo().getBlockX() != event.getFrom().getBlockX()) {
-                mc2FA.getMessageHandler().sendMessage(event.getPlayer(), "&cPlease validate your account with two-factor authentication");
-                event.setTo(event.getFrom());
-            }
+            mc2FA.getMessageHandler().sendMessage(event.getPlayer(), "&cPlease validate your account with two-factor authentication");
+            Location movableCamera = event.getFrom();
+            movableCamera.setYaw(event.getTo().getYaw());
+            movableCamera.setPitch(event.getTo().getPitch());
+            event.setTo(movableCamera);
         }
     }
 
@@ -185,7 +188,7 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onAuthState(PlayerStateChangeEvent event) {
-        if (event.getAuthState().equals(AuthHandler.AuthState.AUTHENTICATED)) {
+        if (event.getAuthState().equals(AuthState.AUTHENTICATED)) {
             event.getPlayer().setFlySpeed((float) 0.1);
             event.getPlayer().setWalkSpeed((float) 0.2);
         }

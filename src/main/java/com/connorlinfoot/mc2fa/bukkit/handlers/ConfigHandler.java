@@ -12,7 +12,6 @@ public class ConfigHandler {
     private String label = "%%name%%:MC2FA";
     private boolean debug = false;
     private boolean commandsDisabled = true;
-    private boolean advise = true;
     private boolean guiKeypad = true;
     private KeyStorage keyStorage = KeyStorage.FLAT;
     private Forced forced = Forced.FALSE;
@@ -20,7 +19,7 @@ public class ConfigHandler {
     private List<String> blacklistedCommands = new ArrayList<>();
 
     public enum KeyStorage {
-        FLAT, SQLITE, MYSQL
+        FLAT, MYSQL
     }
 
     public enum Forced {
@@ -36,14 +35,12 @@ public class ConfigHandler {
         if (config.isSet("Disable Commands"))
             commandsDisabled = config.getBoolean("Disable Commands");
 
-        if (config.isSet("Advise"))
-            advise = config.getBoolean("Advise");
-
         if (config.isSet("GUI Keypad"))
             guiKeypad = config.getBoolean("GUI Keypad");
 
         if (config.isSet("Whitelisted Commands"))
             whitelistedCommands = config.getStringList("Whitelisted Commands");
+
         whitelistedCommands.add("2fa");
         whitelistedCommands.add("twofactorauth");
         whitelistedCommands.add("twofactorauthentication");
@@ -60,10 +57,7 @@ public class ConfigHandler {
             }
         }
 
-        if (keyStorage == KeyStorage.SQLITE) {
-            mc2FA.getLogger().warning("SQLite storage is not yet supported, reverting to flat file storage");
-            keyStorage = KeyStorage.FLAT;
-        } else if (keyStorage == KeyStorage.MYSQL) {
+        if (keyStorage == KeyStorage.MYSQL) {
             mc2FA.getLogger().warning("MySQL storage is not yet supported, reverting to flat file storage");
             keyStorage = KeyStorage.FLAT;
         }
@@ -90,10 +84,6 @@ public class ConfigHandler {
 
     public boolean isCommandsDisabled() {
         return commandsDisabled;
-    }
-
-    public boolean isAdvise() {
-        return advise;
     }
 
     public boolean isGuiKeypad() {

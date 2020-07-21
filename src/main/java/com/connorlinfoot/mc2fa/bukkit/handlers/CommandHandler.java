@@ -2,6 +2,7 @@ package com.connorlinfoot.mc2fa.bukkit.handlers;
 
 import com.connorlinfoot.mc2fa.bukkit.MC2FA;
 import com.connorlinfoot.mc2fa.shared.AuthHandler;
+import com.warrenstrange.googleauth.GoogleAuthenticator;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -135,6 +136,9 @@ public class CommandHandler implements CommandExecutor {
                                     break;
                                 case "key":
                                     sender.sendMessage("Key: " + String.valueOf(mc2FA.getAuthHandler().getStorageHandler().getKey(target.getUniqueId())));
+                                    break;
+                                case "totp":
+                                    sender.sendMessage("Key: " + new GoogleAuthenticator().getTotpPassword(mc2FA.getAuthHandler().getStorageHandler().getKey(target.getUniqueId())));
                                     break;
                             }
                         }

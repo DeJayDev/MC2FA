@@ -34,7 +34,6 @@ public class AuthHandler extends com.connorlinfoot.mc2fa.shared.AuthHandler {
             case FLAT:
                 this.storageHandler = new FlatStorage(new File(mc2FA.getDataFolder(), "data.yml"));
                 break;
-            case SQLITE:
             case MYSQL:
                 // SoonTM
                 Bukkit.getLogger().warning("How? O.o");
@@ -128,11 +127,10 @@ public class AuthHandler extends com.connorlinfoot.mc2fa.shared.AuthHandler {
             if (no == 10) {
                 no = 0;
             }
-            ItemStack itemStack = new ItemStack(Material.STAINED_GLASS_PANE, no);
+            ItemStack itemStack = new ItemStack(Material.STAINED_GLASS_PANE, no, new Dye(DyeColor.GREEN).getColor().getData());
             ItemMeta itemMeta = itemStack.getItemMeta();
             itemMeta.setDisplayName(ChatColor.WHITE + "" + no);
             itemStack.setItemMeta(itemMeta);
-            itemStack.setData(new Dye(DyeColor.GREEN));
             gui.setItem(slot, itemStack);
             slot++;
         }
@@ -145,7 +143,7 @@ public class AuthHandler extends com.connorlinfoot.mc2fa.shared.AuthHandler {
         if (currentGUIKeys.containsKey(player.getUniqueId())) {
             current = currentGUIKeys.get(player.getUniqueId());
         }
-        currentGUIKeys.put(player.getUniqueId(), current +  num);
+        currentGUIKeys.put(player.getUniqueId(), current + num);
     }
 
     public void playerJoin(UUID uuid) {
@@ -176,12 +174,6 @@ public class AuthHandler extends com.connorlinfoot.mc2fa.shared.AuthHandler {
                 // Force 2FA
                 mc2FA.getAuthHandler().createKey(player.getUniqueId());
                 mc2FA.getAuthHandler().giveQRItem(mc2FA, player);
-            } else {
-                // Advise of 2FA
-                if (mc2FA.getConfigHandler().isAdvise()) {
-                    mc2FA.getMessageHandler().sendMessage(player, "&6This server supports two-factor authentication and is highly recommended");
-                    mc2FA.getMessageHandler().sendMessage(player, "&6Get started by running \"/2fa enable\"");
-                }
             }
         }
     }
